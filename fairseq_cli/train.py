@@ -42,6 +42,9 @@ from fairseq.trainer import Trainer
 
 
 def main(cfg: FairseqConfig) -> None:
+    global return_code
+    return_code = 0
+
     if isinstance(cfg, argparse.Namespace):
         cfg = convert_namespace_to_omegaconf(cfg)
 
@@ -212,6 +215,10 @@ def main(cfg: FairseqConfig) -> None:
         )
         PathManager.async_close()
         logger.info("ioPath PathManager finished waiting.")
+
+    if torch.distributed.is_initialized():
+        torch.distributed.barrier(distributed_utils.get_global_group())
+    exit(return_code)
 
 
 def should_stop_early(cfg: DictConfig, valid_loss: float) -> bool:
@@ -390,6 +397,17 @@ def validate_and_save(
             f"stop_time_hours: {cfg.optimization.stop_time_hours} hour(s)"
         )
 
+    stop_by_time = (
+        hasattr(cfg.checkpoint, "stop_after")
+        and cfg.checkpoint.stop_after > 0
+        and (float(trainer.cumulative_training_time()) - float(trainer._previous_training_time)) / 60 > cfg.checkpoint.stop_after
+    )
+
+    if stop_by_time:
+        logger.info("Reach time constraint %dmin" % (cfg.checkpoint.stop_after))
+        global return_code
+        return_code = 1234
+
     do_save = (
         (end_of_epoch and epoch_itr.epoch % cfg.checkpoint.save_interval == 0)
         or should_stop
@@ -399,6 +417,7 @@ def validate_and_save(
             and num_updates % cfg.checkpoint.save_interval_updates == 0
             and num_updates >= cfg.dataset.validate_after_updates
         )
+        or stop_by_time
     )
     do_validate = (
         (
@@ -413,6 +432,7 @@ def validate_and_save(
         )
         and not cfg.dataset.disable_validation
         and num_updates >= cfg.dataset.validate_after_updates
+        and not stop_by_time
     )
 
     # Validate
@@ -421,6 +441,7 @@ def validate_and_save(
         valid_losses = validate(cfg, trainer, task, epoch_itr, valid_subsets)
 
     should_stop |= should_stop_early(cfg, valid_losses[0])
+    should_stop |= stop_by_time
 
     # Save checkpoint
     if do_save or should_stop:

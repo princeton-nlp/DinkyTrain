@@ -774,6 +774,9 @@ class CheckpointConfig(FairseqDataclass):
             "argparse_alias": "--save-async",
         },
     )
+    stop_after: int = field(
+        default=0, metadata={"help": "end the training after a certain period of time (min)"}
+    )
     model_parallel_size: int = II("common.model_parallel_size")
 
 
