@@ -123,7 +123,7 @@ def save_checkpoint(cfg: CheckpointConfig, trainer, epoch_itr, val_loss):
                 )
             else:
                 assert PathManager.copy(
-                    checkpoints[0], cp, overwrite=True
+                    checkpoints[0], cp, overwrite=True, make_hard_link=True
                 ), f"Failed to copy {checkpoints[0]} to {cp}"
 
         write_timer.stop()

@@ -68,11 +68,18 @@ class PathManager:
         )
 
     @staticmethod
-    def copy(src_path: str, dst_path: str, overwrite: bool = False) -> bool:
+    def copy(src_path: str, dst_path: str, overwrite: bool = False, make_hard_link=False) -> bool:
         if IOPathManager:
             return IOPathManager.copy(
                 src_path=src_path, dst_path=dst_path, overwrite=overwrite
             )
+        if make_hard_link:
+            temp_dst_path = dst_path + '.tmp'
+            if os.path.exists(temp_dst_path):
+                os.remove(temp_dst_path)
+            os.link(src_path, temp_dst_path)
+            os.rename(temp_dst_path, dst_path)
+            return dst_path
         return shutil.copyfile(src_path, dst_path)
 
     @staticmethod
