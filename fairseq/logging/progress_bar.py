@@ -510,7 +510,7 @@ class WandBProgressBarWrapper(BaseProgressBar):
     def update_config(self, config):
         """Log latest configuration."""
         if wandb is not None:
-            wandb.config.update(config)
+            wandb.config.update(config, allow_val_change=True)
         self.wrapped_bar.update_config(config)
 
     def _log_to_wandb(self, stats, tag=None, step=None):
