@@ -29,6 +29,7 @@ from fairseq.data import (
     data_utils,
 )
 from fairseq.data.shorten_dataset import maybe_shorten_dataset
+from fairseq.data.subsample_dataset import SubsampleDataset
 from fairseq.tasks import FairseqDataclass, FairseqTask, register_task
 from fairseq.dataclass import ChoiceEnum
 
@@ -44,13 +45,13 @@ class SentencePredictionConfig(FairseqDataclass):
         default=-1,
         metadata={"help": "number of classes or regression targets"},
     )
-    init_token: Optional[int] = field(
-        default=None,
-        metadata={"help": "add token at the beginning of each batch item"},
+    no_init_token: bool = field(
+        default=False,
+        metadata={"help": "don't add token at the beginning of each batch item"},
     )
-    separator_token: Optional[int] = field(
-        default=None,
-        metadata={"help": "add separator token between inputs"},
+    no_separator_token: bool = field(
+        default=False,
+        metadata={"help": "don't add separator token between inputs"},
     )
     no_shuffle: bool = field(
         default=False,
@@ -82,6 +83,25 @@ class SentencePredictionConfig(FairseqDataclass):
     regression_target: bool = II("criterion.regression_target")
     classification_head_name: str = II("criterion.classification_head_name")
     seed: int = II("common.seed")
+
+    sampling_fraction: Optional[float] = field(
+        default=1.0,
+        metadata={
+            "help": "Only use a fraction of data in the dataset for training"
+        }
+    )
+    sampling_size: Optional[int] = field(
+        default=0,
+        metadata={
+            "help": "Only use a subset of data in the dataset for training"
+        }
+    )
+    subsample_seed: int = field(
+        default=1,
+        metadata={
+            "help": "Seed used for subsampling"
+        }
+    )
 
 
 @register_task("sentence_prediction", dataclass=SentencePredictionConfig)
@@ -158,19 +178,16 @@ class SentencePredictionTask(FairseqTask):
         )
         input1 = make_dataset("input1", self.source_dictionary)
 
-        if self.cfg.init_token is not None:
-            input0 = PrependTokenDataset(input0, self.cfg.init_token)
+        if not self.cfg.no_init_token:
+            input0 = PrependTokenDataset(input0, self.source_dictionary.bos())
 
         if input1 is None:
             src_tokens = input0
         else:
-            if self.cfg.separator_token is not None:
-                input1 = PrependTokenDataset(input1, self.cfg.separator_token)
+            if not self.cfg.no_separator_token:
+                input1 = PrependTokenDataset(input1,  self.source_dictionary.eos())
 
             src_tokens = ConcatSentencesDataset(input0, input1)
-
-        with data_utils.numpy_seed(self.cfg.seed):
-            shuffle = np.random.permutation(len(src_tokens))
 
         src_tokens = maybe_shorten_dataset(
             src_tokens,
@@ -240,6 +257,17 @@ class SentencePredictionTask(FairseqTask):
             dataset,
             sizes=[src_tokens.sizes],
         )
+
+        if split == "train":
+            if self.cfg.sampling_fraction < 1.0:
+                with data_utils.numpy_seed(self.cfg.subsample_seed):
+                    nested_dataset = SubsampleDataset(nested_dataset, size_ratio=self.cfg.sampling_fraction)
+            elif self.cfg.sampling_size > 0:
+                with data_utils.numpy_seed(self.cfg.subsample_seed):
+                    nested_dataset = SubsampleDataset(nested_dataset, actual_size=self.cfg.sampling_size)
+
+        with data_utils.numpy_seed(self.cfg.seed):
+            shuffle = np.random.permutation(len(nested_dataset))
 
         if self.cfg.no_shuffle:
             dataset = nested_dataset

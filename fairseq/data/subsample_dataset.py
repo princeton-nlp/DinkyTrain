@@ -21,10 +21,14 @@ class SubsampleDataset(BaseWrapperDataset):
         size_ratio(float): the ratio to subsample to. must be between 0 and 1 (exclusive)
     """
 
-    def __init__(self, dataset, size_ratio, shuffle=False):
+    def __init__(self, dataset, size_ratio=None, shuffle=False, actual_size=None):
         super().__init__(dataset)
-        assert size_ratio < 1
-        self.actual_size = np.ceil(len(dataset) * size_ratio).astype(int)
+        if size_ratio is not None:
+            assert size_ratio < 1
+            self.actual_size = np.ceil(len(dataset) * size_ratio).astype(int)
+        else:
+            assert actual_size is not None and actual_size < len(dataset)
+            self.actual_size = actual_size
         self.indices = np.random.choice(
             list(range(len(self.dataset))), self.actual_size, replace=False
         )
