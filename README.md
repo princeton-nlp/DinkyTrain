@@ -34,22 +34,14 @@ See the [fairseq repo](https://github.com/fairseq/fairseq) and its [documentatio
 ## Installation
 * [PyTorch](http://pytorch.org/) version >= 1.5.0
 * Python version >= 3.6
-* For training new models, you'll also need an NVIDIA GPU and [NCCL](https://github.com/NVIDIA/nccl)
 * **To install fairseq** and develop locally:
-
 ``` bash
 git clone https://github.com/pytorch/fairseq
 cd fairseq
 pip install --editable ./
-
-# on MacOS:
-# CFLAGS="-stdlib=libc++" pip install --editable ./
-
-# to install the latest stable release (0.10.x)
-# pip install fairseq
 ```
 
-* **For faster training** install NVIDIA's [apex](https://github.com/NVIDIA/apex) library:
+* **For faster training (FP16)** install NVIDIA's [apex](https://github.com/NVIDIA/apex) library:
 
 ``` bash
 git clone https://github.com/NVIDIA/apex
@@ -59,15 +51,38 @@ pip install -v --no-cache-dir --global-option="--cpp_ext" --global-option="--cud
   --global-option="--fast_multihead_attn" ./
 ```
 
+* **For faster training (DeepSpeed cuda kernel)** install [DeepSpeed](https://www.deepspeed.ai) library and compile the DeepSpeed kernel
+
+``` bash
+DS_BUILD_TRANSFORMER=1 DS_BUILD_STOCHASTIC_TRANSFORMER=1 pip install deepspeed
+```
+
 * **For large datasets** install [PyArrow](https://arrow.apache.org/docs/python/install.html#using-pip): `pip install pyarrow`
 * If you use Docker make sure to increase the shared memory size either with `--ipc=host` or `--shm-size`
  as command line options to `nvidia-docker run` .
+
+**Trouble-shooting**: 
+* If using lower version of Python, you might encounter import problems with `importlib.metadata`. Try `pip install importlib-metadata`.
+* To install `apex` and `deepspeed`, you will need nvcc (CUDA compiler). 
+* When installing `apex`, if you encounter the error `Cuda extensions are bing compiled with a version of Cuda that does not match ...`, go to `setup.py` and comment out the line that raised the error (at your own risk).
+* Both `apex` and `deepspeed` installation require a high gcc version to support `c++14`. If you encounter relevant errors, update your gcc.
 
 ## Run the Pre-training
 ### Data Pre-processing
 ...
 ### Pre-training
-...
+
+Use our script for efficient pre-training
+``` bash
+GPU={number of GPUs} DATA_DIR={data path} [DEEPSPEED=1] bash run_efficient_mlm_recipe.sh
+```
+Flags explained
+* `GPU`: number of GPUs.
+* `DATA_DIR`: directory to the processed pre-training data.
+* `DEEPSPEED`: if set to 1, the DeepSpeed CUDA kernel will be used.
+
+Please refer to the script for more hyperparameter choices.
+
 ### Fine-tuning
 ...
 ### Convert to HuggingFace
