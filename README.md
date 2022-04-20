@@ -71,7 +71,22 @@ pip install -v --no-cache-dir --global-option="--cpp_ext" --global-option="--cud
 ### Fine-tuning
 ...
 ### Convert to HuggingFace
-...
+
+We also provide conversion codes so that you can easily turn Fairseq checkpoints into HuggingFace checkpoints. Usage:
+
+```bash
+cd scripts
+[PRELAYERNORM=1] [FROM_DS=1] python convert_fs_ckpt_to_hf_ckpt.py --fr {fairseq checkpoint} --to {huggingface checkpoint path} --hf_model_config {roberta-base/roberta-large} 
+```
+
+Flags explained:
+* `PRELAYERNORM=1`: Using pre layer-norm (default is post layer-norm).
+* `FROM_DS=1`: The Fairseq checkpoint uses DeepSpeed's cuda kernel.
+* `--fr`: The path to the Fairseq checkpoint.
+* `--to`: The path you want to save the HuggingFace checkpoint to.
+* `--hf_model_config`: `roberta-base` or `roberta-large`.
+
+For more configuration, please refer to `convert_fs_ckpt_to_hf_ckpt.py`.
 
 ## Model List
 ...
