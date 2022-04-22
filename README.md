@@ -84,6 +84,9 @@ GPU={number of GPUs} DATA_DIR={data path} [DEEPSPEED=1] bash run_efficient_mlm_r
 Flags explained
 * `GPU`: number of GPUs.
 * `DATA_DIR`: directory to the processed pre-training data. If you are using our preprocessed dataset, `DATA_DIR` should be:
+```bash
+DATA_DIR=$(seq 0 15 | sed -e 's/^/wikibook_fairseq_format\/bin-shard/' | sed -e 's/$/-8/' | paste -sd ':')
+```
 * `DEEPSPEED`: if set to 1, the DeepSpeed CUDA kernel will be used.
 
 Please refer to the script for more hyperparameter choices.
