@@ -64,7 +64,17 @@ DS_BUILD_TRANSFORMER=1 DS_BUILD_STOCHASTIC_TRANSFORMER=1 pip install deepspeed
 
 ## Run the Pre-training
 ### Data Pre-processing
-...
+
+**Use our pre-processed data**: We preprocessed Wikipedia+BookCorpus and shared it on [Huggingface dataset](https://huggingface.co/datasets/princeton-nlp/wikibook_fairseq_format).
+It is ~22GB and contains two epochs of data, each epoch being sliced into 8 shards.
+ You can download it using `git`:
+```bash
+git lfs install # Git lfs is needed for downloading
+git clone https://huggingface.co/datasets/princeton-nlp/wikibook_fairseq_format
+```
+
+**Tokenization**: TBD
+
 ### Pre-training
 
 Use our script for efficient pre-training
@@ -73,7 +83,7 @@ GPU={number of GPUs} DATA_DIR={data path} [DEEPSPEED=1] bash run_efficient_mlm_r
 ```
 Flags explained
 * `GPU`: number of GPUs.
-* `DATA_DIR`: directory to the processed pre-training data.
+* `DATA_DIR`: directory to the processed pre-training data. If you are using our preprocessed dataset, `DATA_DIR` should be:
 * `DEEPSPEED`: if set to 1, the DeepSpeed CUDA kernel will be used.
 
 Please refer to the script for more hyperparameter choices.
@@ -115,3 +125,5 @@ Please cite as:
 ``` -->
 
 ## Citations
+
+TBD

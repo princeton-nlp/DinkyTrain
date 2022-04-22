@@ -27,7 +27,7 @@ JOB_NAME=efficient_roberta_large_bsz4096_lr2e-3_mask0.4
 WANDB_PROJECT=$JOB_NAME                          # Weight and Bias
 MAX_POSITIONS=512                                # Num. positional embeddings 
 UPDATE_FREQ=$(expr $BSZ / $MAX_SENTENCES / $GPU) # Gradient accumulation
-SAVE_INTERVAL_UPDATES=100000000                  # Never save a fixed interval
+SAVE_INTERVAL_UPDATES=5000                  
 
 EXTRA_ARGS=""
 if [ "$DEEPSPEED" = "1" ]
