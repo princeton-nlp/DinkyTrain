@@ -4,27 +4,22 @@
   <br />
 </p>
 
-This repository is a fork of [fairseq](https://github.com/fairseq/fairseq) with custom changes for efficient training of masked language models. We fork fairseq to give researchers more flexibility when using our training scripts,
+This repository is a fork of [fairseq](https://github.com/fairseq/fairseq) with custom changes for efficient training of masked language models (MLM). We fork fairseq to give researchers more flexibility when using our training scripts,
 while also making it easier to adapt our code contributions into other projects.
 
 Our contributions:
 * [DeepSpeed transformer kernel](https://www.deepspeed.ai/tutorials/transformer_kernel/) integration
-* A training recipe for efficient MLM pre-training (soon)
-
+* A training recipe for efficient MLM pre-training
+* An easy-to-follow guideline of using fairseq for MLM pre-training. 
 
 Other [fairseq features](https://github.com/fairseq/fairseq#features):
-* multi-GPU training on one machine or across multiple machines (data and model parallel)
-* fast generation on both CPU and GPU with multiple search algorithms implemented:
-  + beam search
-  + Diverse Beam Search ([Vijayakumar et al., 2016](https://arxiv.org/abs/1610.02424))
-  + sampling (unconstrained, top-k and top-p/nucleus)
-  + [lexically constrained decoding](examples/constrained_decoding/README.md) (Post & Vilar, 2018)
-* [gradient accumulation](https://fairseq.readthedocs.io/en/latest/getting_started.html#large-mini-batch-training-with-delayed-updates) enables training with large mini-batches even on a single GPU
-* [mixed precision training](https://fairseq.readthedocs.io/en/latest/getting_started.html#training-with-half-precision-floating-point-fp16) (trains faster with less GPU memory on [NVIDIA tensor cores](https://developer.nvidia.com/tensor-cores))
-* [extensible](https://fairseq.readthedocs.io/en/latest/overview.html): easily register new models, criterions, tasks, optimizers and learning rate schedulers
-* [flexible configuration](docs/hydra_integration.md) based on [Hydra](https://github.com/facebookresearch/hydra) allowing a combination of code, command-line and file based configuration
-* [full parameter and optimizer state sharding](examples/fully_sharded_data_parallel/README.md)
-* [offloading parameters to CPU](examples/fully_sharded_data_parallel/README.md)
+* Multi-GPU training on one machine or across multiple machines (data and model parallel)
+* [Gradient accumulation](https://fairseq.readthedocs.io/en/latest/getting_started.html#large-mini-batch-training-with-delayed-updates) enables training with large mini-batches even on a single GPU
+* [Mixed precision training](https://fairseq.readthedocs.io/en/latest/getting_started.html#training-with-half-precision-floating-point-fp16) (trains faster with less GPU memory on [NVIDIA tensor cores](https://developer.nvidia.com/tensor-cores))
+* [Extensible](https://fairseq.readthedocs.io/en/latest/overview.html): easily register new models, criterions, tasks, optimizers and learning rate schedulers
+* [Flexible configuration](docs/hydra_integration.md) based on [Hydra](https://github.com/facebookresearch/hydra) allowing a combination of code, command-line and file based configuration
+* [Full parameter and optimizer state sharding](examples/fully_sharded_data_parallel/README.md)
+* [Offloading parameters to CPU](examples/fully_sharded_data_parallel/README.md)
 
 See the [fairseq repo](https://github.com/fairseq/fairseq) and its [documentation](https://fairseq.readthedocs.io/) for more details on how to use and extend fairseq.
 
@@ -118,3 +113,5 @@ Please cite as:
   year = {2019},
 }
 ``` -->
+
+## Citations
