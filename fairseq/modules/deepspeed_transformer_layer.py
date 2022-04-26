@@ -61,10 +61,11 @@ class DeepSpeedTransformerEncoderLayer(DeepSpeedTransformerLayer):
 
         x = x.transpose(0,1)  # T x B x C -> B x T x C
 
-        attention_mask = torch.zeros(x.size(0), x.size(1), dtype=x.dtype, device=x.device)
+        attention_mask = torch.zeros(x.size(0), 1, 1, x.size(1), dtype=x.dtype, device=x.device)
 
         if encoder_padding_mask is not None:
-            attention_mask = attention_mask.masked_fill_(encoder_padding_mask, float('-inf'))
+            attention_mask = attention_mask.masked_fill_(
+                encoder_padding_mask.view(attention_mask.shape), float('-inf'))
 
         x = super().forward(x, attention_mask=attention_mask)
         return x.transpose(0,1)  # B x T x C -> T x B x C
