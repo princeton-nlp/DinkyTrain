@@ -201,10 +201,10 @@ We also offer the original (deepspeed) fairseq checkpoints [here](https://huggin
 ## Citation
 
 ``` bibtex
-@inproceedings{ott2019fairseq,
-  title = {fairseq: A Fast, Extensible Toolkit for Sequence Modeling},
-  author = {Myle Ott and Sergey Edunov and Alexei Baevski and Angela Fan and Sam Gross and Nathan Ng and David Grangier and Michael Auli},
-  booktitle = {Proceedings of NAACL-HLT 2019: Demonstrations},
-  year = {2019},
+@article{wettig2022should,
+   title={Should You Mask 15% in Masked Language Modeling?},
+   author={Wettig, Alexander and Gao, Tianyu and Zhong, Zexuan and Chen, Danqi},
+   boo={arXiv preprint arXiv:2202.08005},
+   year={2022}
 }
 ```
