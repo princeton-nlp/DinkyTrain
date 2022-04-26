@@ -28,9 +28,7 @@ Other [fairseq features](https://github.com/fairseq/fairseq#features):
 
 See the [fairseq repo](https://github.com/fairseq/fairseq) and its [documentation](https://fairseq.readthedocs.io/) for more details on how to use and extend fairseq.
 
-
-
-# DinkyTrain (for Efficient MLM Pre-training)
+# DinkyTrain for Efficient MLM Pre-training
 
 ## Quick Links
 
