@@ -30,7 +30,7 @@ See the [fairseq repo](https://github.com/fairseq/fairseq) and its [documentatio
 
 
 
-# Efficient MLM Pre-training
+# DinkyTrain (for Efficient MLM Pre-training)
 
 ## Quick Links
 
@@ -41,7 +41,6 @@ See the [fairseq repo](https://github.com/fairseq/fairseq) and its [documentatio
   - [Fine-tuning on GLUE](#fine-tuning-on-glue)
   - [Convert to HuggingFace](#convert-to-huggingface)
   - [Model List](#model-list)
-  - [Citations](#citations)
 
 ## Overview
 You can reproduce the pre-training experiments of our recent paper [Should You Mask 15% in Masked Language Modeling?](https://arxiv.org/abs/2202.08005),
