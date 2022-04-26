@@ -39,19 +39,11 @@ See the [fairseq repo](https://github.com/fairseq/fairseq) and its [documentatio
   - [Fine-tuning on GLUE](#fine-tuning-on-glue)
   - [Convert to HuggingFace](#convert-to-huggingface)
   - [Model List](#model-list)
+  - [Citation](#citation)
 
 ## Overview
 You can reproduce the pre-training experiments of our recent paper [Should You Mask 15% in Masked Language Modeling?](https://arxiv.org/abs/2202.08005),
 where we find that higher masking rates can lead to more efficient pre-training.
-Citation:
-```
-@article{wettig2022should,
-  title={Should You Mask 15\% in Masked Language Modeling?},
-  author={Wettig, Alexander and Gao, Tianyu and Zhong, Zexuan and Chen, Danqi},
-  journal={arXiv preprint arXiv:2202.08005},
-  year={2022}
-}
-```
 
 ## Installation
 * [PyTorch](http://pytorch.org/) version >= 1.5.0
@@ -206,9 +198,7 @@ We also offer the original (deepspeed) fairseq checkpoints [here](https://huggin
 
 
 
-<!-- # Citation
-
-Please cite as:
+## Citation
 
 ``` bibtex
 @inproceedings{ott2019fairseq,
@@ -217,4 +207,4 @@ Please cite as:
   booktitle = {Proceedings of NAACL-HLT 2019: Demonstrations},
   year = {2019},
 }
-``` -->
+```
