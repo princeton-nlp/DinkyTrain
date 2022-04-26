@@ -5,7 +5,7 @@
   <br />
 </p>
 
-This repository is a library for efficient training of masked language models (MLM), built with [fairseq](https://github.com/fairseq/fairseq). We fork fairseq to give researchers more flexibility when using our training scripts,
+This repository provides a library for efficient training of masked language models (MLM), built with [fairseq](https://github.com/fairseq/fairseq). We fork fairseq to give researchers more flexibility when using our training scripts,
 while also making it easier to adapt our code contributions into other projects.
 
 ## Why DinkyTrain?
