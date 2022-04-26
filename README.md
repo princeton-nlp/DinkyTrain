@@ -1,16 +1,21 @@
 <p align="center">
-  <a href="https://github.com/fairseq/fairseq"><img src="docs/pnlp_logo512.png" width="150" style="padding-right: 2em"></a>
-  <a href="https://princeton-nlp.github.io/"><img src="docs/fairseq_logo.png" width="150"></a>
+  <!--<a href="https://github.com/fairseq/fairseq"><img src="docs/pnlp_logo512.png" width="150"></a>-->
+  <a href="https://github.com/princeton-nlp/DinkyTrain"><img src="docs/DinkyTrainLogo.png" width="200"></a>
+  <!--<a href="https://princeton-nlp.github.io/"><img src="docs/fairseq_logo.png" width="150"></a>-->
   <br />
 </p>
 
-This repository is a fork of [fairseq](https://github.com/fairseq/fairseq) with custom changes for efficient training of masked language models (MLM). We fork fairseq to give researchers more flexibility when using our training scripts,
+This repository is a library for efficient training of masked language models (MLM), built with [fairseq](https://github.com/fairseq/fairseq). We fork fairseq to give researchers more flexibility when using our training scripts,
 while also making it easier to adapt our code contributions into other projects.
 
-Our contributions:
+## Why DinkyTrain?
+The [Dinky](https://en.wikipedia.org/wiki/Princeton_Branch) runs between Princeton Junction and Princeton and is the shortest scheduled commuter rail line in the United States.
+We also aim to make pre-training short and accessible to everyone.
+
+## Our contributions
 * [DeepSpeed transformer kernel](https://www.deepspeed.ai/tutorials/transformer_kernel/) integration
 * A training recipe for efficient MLM pre-training
-* An easy-to-follow guideline of using fairseq for MLM pre-training. 
+* An easy-to-follow guideline of using fairseq for MLM pre-training.
 
 Other [fairseq features](https://github.com/fairseq/fairseq#features):
 * Multi-GPU training on one machine or across multiple machines (data and model parallel)
@@ -22,6 +27,8 @@ Other [fairseq features](https://github.com/fairseq/fairseq#features):
 * [Offloading parameters to CPU](examples/fully_sharded_data_parallel/README.md)
 
 See the [fairseq repo](https://github.com/fairseq/fairseq) and its [documentation](https://fairseq.readthedocs.io/) for more details on how to use and extend fairseq.
+
+
 
 # Efficient MLM Pre-training
 
@@ -37,7 +44,17 @@ See the [fairseq repo](https://github.com/fairseq/fairseq) and its [documentatio
   - [Citations](#citations)
 
 ## Overview
-...
+You can reproduce the pre-training experiments of our recent paper [Should You Mask 15% in Masked Language Modeling?](https://arxiv.org/abs/2202.08005),
+where we find that higher masking rates can lead to more efficient pre-training.
+Citation:
+```
+@article{wettig2022should,
+  title={Should You Mask 15\% in Masked Language Modeling?},
+  author={Wettig, Alexander and Gao, Tianyu and Zhong, Zexuan and Chen, Danqi},
+  journal={arXiv preprint arXiv:2202.08005},
+  year={2022}
+}
+```
 
 ## Installation
 * [PyTorch](http://pytorch.org/) version >= 1.5.0
@@ -69,23 +86,51 @@ DS_BUILD_TRANSFORMER=1 DS_BUILD_STOCHASTIC_TRANSFORMER=1 pip install deepspeed
 * If you use Docker make sure to increase the shared memory size either with `--ipc=host` or `--shm-size`
  as command line options to `nvidia-docker run` .
 
-**Trouble-shooting**: 
+**Trouble-shooting**:
 * If using lower version of Python, you might encounter import problems with `importlib.metadata`. Try `pip install importlib-metadata`.
-* To install `apex` and `deepspeed`, you will need nvcc (CUDA compiler). 
+* To install `apex` and `deepspeed`, you will need nvcc (CUDA compiler).
 * When installing `apex`, if you encounter the error `Cuda extensions are bing compiled with a version of Cuda that does not match ...`, go to `setup.py` and comment out the line that raised the error (at your own risk).
 * Both `apex` and `deepspeed` installation require a high gcc version to support `c++14`. If you encounter relevant errors, update your gcc.
 
 ## Data Pre-processing
 
-**Use our pre-processed data**: We preprocessed Wikipedia+BookCorpus and shared it on [Huggingface dataset](https://huggingface.co/datasets/princeton-nlp/wikibook_fairseq_format).
+**Tokenization**:
+First, download the GPT2 BPE vocabulary:
+```bash
+wget -O gpt2_bpe/encoder.json https://dl.fbaipublicfiles.com/fairseq/gpt2_bpe/encoder.json
+wget -O gpt2_bpe/vocab.bpe https://dl.fbaipublicfiles.com/fairseq/gpt2_bpe/vocab.bpe
+```
+
+Then, tokenize your raw data:
+```bash
+python -m examples.roberta.multiprocessing_bpe_encoder \
+    --encoder-json gpt2_bpe/encoder.json \
+    --vocab-bpe gpt2_bpe/vocab.bpe \
+    --inputs ${SPLIT}.raw \
+    --outputs ${SPLIT}.bpe \
+    --keep-empty \
+    --workers 8
+```
+
+Finally, index and binarize your data:
+```bash
+fairseq-preprocess \
+    --only-source \
+    --srcdict gpt2_bpe/dict.txt \
+    --trainpref ${TRAIN_SPLIT}.bpe \
+    --validpref ${VALID_SPLIT}.bpe \
+    --testpref ${TEST_SPLIT}.bpe \
+    --destdir output-bin \
+    --workers 8
+```
+
+**Alternatively: Use our pre-processed data**: We preprocessed Wikipedia+BookCorpus and shared it on [Huggingface dataset](https://huggingface.co/datasets/princeton-nlp/wikibook_fairseq_format).
 It is ~22GB and contains two epochs of data, each epoch being sliced into 8 shards.
  You can download it using `git`:
 ```bash
 git lfs install # Git lfs is needed for downloading
 git clone https://huggingface.co/datasets/princeton-nlp/wikibook_fairseq_format
 ```
-
-**Tokenization**: TBD
 
 ## Pre-training
 
@@ -132,7 +177,7 @@ We also provide conversion codes so that you can easily turn Fairseq checkpoints
 
 ```bash
 cd scripts
-[PRELAYERNORM=1] [FROM_DS=1] python convert_fs_ckpt_to_hf_ckpt.py --fr {fairseq checkpoint} --to {huggingface checkpoint path} --hf_model_config {roberta-base/roberta-large} 
+[PRELAYERNORM=1] [FROM_DS=1] python convert_fs_ckpt_to_hf_ckpt.py --fr {fairseq checkpoint} --to {huggingface checkpoint path} --hf_model_config {roberta-base/roberta-large}
 ```
 
 Flags explained:
@@ -161,6 +206,9 @@ Here are the HuggingFace checkpoints of our models in the paper [Should You Mask
 
 We also offer the original (deepspeed) fairseq checkpoints [here](https://huggingface.co/princeton-nlp/efficient_mlm_fairseq_ckpt). 
 
+
+
+
 <!-- # Citation
 
 Please cite as:
@@ -173,7 +221,3 @@ Please cite as:
   year = {2019},
 }
 ``` -->
-
-## Citations
-
-TBD
