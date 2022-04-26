@@ -8,7 +8,11 @@
 This repository is a fork of [fairseq](https://github.com/fairseq/fairseq) with custom changes for efficient training of masked language models (MLM). We fork fairseq to give researchers more flexibility when using our training scripts,
 while also making it easier to adapt our code contributions into other projects.
 
-Our contributions:
+## Why DinkyTrain?
+The [Dinky](https://en.wikipedia.org/wiki/Princeton_Branch) runs between Princeton Junction and Princeton and is the shortest scheduled commuter rail line in the United States.
+We also aim to make pre-training short and accessible to everyone.
+
+## Our contributions
 * [DeepSpeed transformer kernel](https://www.deepspeed.ai/tutorials/transformer_kernel/) integration
 * A training recipe for efficient MLM pre-training
 * An easy-to-follow guideline of using fairseq for MLM pre-training.
@@ -24,9 +28,7 @@ Other [fairseq features](https://github.com/fairseq/fairseq#features):
 
 See the [fairseq repo](https://github.com/fairseq/fairseq) and its [documentation](https://fairseq.readthedocs.io/) for more details on how to use and extend fairseq.
 
-**Why DinkyTrain?**
-The [Dinky](https://en.wikipedia.org/wiki/Princeton_Branch) runs between Princeton Junction and Princeton and is the shortest scheduled commuter rail line in the United States.
-We also aim to make pre-training short and accessible to everyone.
+
 
 # Efficient MLM Pre-training
 ## Overview
