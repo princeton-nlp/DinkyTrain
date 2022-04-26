@@ -12,7 +12,7 @@ while also making it easier to adapt our code contributions into other projects.
 The [Dinky](https://en.wikipedia.org/wiki/Princeton_Branch) runs between Princeton Junction and Princeton and is the shortest scheduled commuter rail line in the United States.
 We also aim to make pre-training short and accessible to everyone.
 
-## Our contributions
+## Our Contributions
 * [DeepSpeed transformer kernel](https://www.deepspeed.ai/tutorials/transformer_kernel/) integration
 * A training recipe for efficient MLM pre-training
 * An easy-to-follow guideline of using fairseq for MLM pre-training.
