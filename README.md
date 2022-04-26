@@ -24,8 +24,21 @@ Other [fairseq features](https://github.com/fairseq/fairseq#features):
 See the [fairseq repo](https://github.com/fairseq/fairseq) and its [documentation](https://fairseq.readthedocs.io/) for more details on how to use and extend fairseq.
 
 # Efficient MLM Pre-training
+
+## Quick Links
+
+  - [Overview](#overview)
+  - [Installation](#installation)
+  - [Data Pre-processing](#data-pre-processing)
+  - [Pre-training](#pre-training)
+  - [Fine-tuning on GLUE](#fine-tuning-on-glue)
+  - [Convert to HuggingFace](#convert-to-huggingface)
+  - [Model List](#model-list)
+  - [Citations](#citations)
+
 ## Overview
 ...
+
 ## Installation
 * [PyTorch](http://pytorch.org/) version >= 1.5.0
 * Python version >= 3.6
@@ -62,8 +75,7 @@ DS_BUILD_TRANSFORMER=1 DS_BUILD_STOCHASTIC_TRANSFORMER=1 pip install deepspeed
 * When installing `apex`, if you encounter the error `Cuda extensions are bing compiled with a version of Cuda that does not match ...`, go to `setup.py` and comment out the line that raised the error (at your own risk).
 * Both `apex` and `deepspeed` installation require a high gcc version to support `c++14`. If you encounter relevant errors, update your gcc.
 
-## Run the Pre-training
-### Data Pre-processing
+## Data Pre-processing
 
 **Use our pre-processed data**: We preprocessed Wikipedia+BookCorpus and shared it on [Huggingface dataset](https://huggingface.co/datasets/princeton-nlp/wikibook_fairseq_format).
 It is ~22GB and contains two epochs of data, each epoch being sliced into 8 shards.
@@ -75,7 +87,7 @@ git clone https://huggingface.co/datasets/princeton-nlp/wikibook_fairseq_format
 
 **Tokenization**: TBD
 
-### Pre-training
+## Pre-training
 
 Use our script for efficient pre-training
 ``` bash
@@ -87,13 +99,34 @@ Flags explained
 ```bash
 DATA_DIR=$(seq 0 15 | sed -e 's/^/wikibook_fairseq_format\/bin-shard/' | sed -e 's/$/-8/' | paste -sd ':')
 ```
-* `DEEPSPEED`: if set to 1, the DeepSpeed CUDA kernel will be used.
+* `DEEPSPEED` (optional): if set to 1, the DeepSpeed CUDA kernel will be used.
 
 Please refer to the script for more hyperparameter choices.
 
-### Fine-tuning
-...
-### Convert to HuggingFace
+## Fine-tuning on GLUE
+
+All our checkpoints can be converted to HuggingFace [transformers](https://github.com/huggingface/transformers) models (see next nextion) and use the [transformers](https://github.com/huggingface/transformers) package for fine-tuning. Fairseq also supports fine-tuning on GLUE. 
+
+First, download the preprocessed GLUE data (you can also process by yourself following the preprocess section above):
+``` bash
+git lfs install # Git lfs is needed for downloading
+git clone https://huggingface.co/datasets/princeton-nlp/glue_fairseq_format
+```
+
+Then use the following script for fine-tuning
+```
+DATA_DIR={path to the data directory} \
+TASK={glue task name (mnli qnli qqp rte sst2 mrpc cola stsb)} \
+LR={learning rate} \
+BSZ={batch size} \
+EPOCHS={number of epochs} \
+SEED={random seed} \
+CKPT_DIR={checkpoint's directory} \
+CKPT_NAME={checkpoint's name} \
+[DEEPSPEED=1] bash finetune_glue.sh
+```
+
+## Convert to HuggingFace
 
 We also provide conversion codes so that you can easily turn Fairseq checkpoints into HuggingFace checkpoints. Usage:
 
@@ -109,10 +142,24 @@ Flags explained:
 * `--to`: The path you want to save the HuggingFace checkpoint to.
 * `--hf_model_config`: `roberta-base` or `roberta-large`.
 
+**IMPORTANT**: all our models use pre layer norm, which is not supported by HuggingFace yet. To use it, import the model class from `scripts/pre_ln_roberta/modeling_roberta.py`. For example:
+``` python
+from pre_ln_roberta.modeling_roberta import RobertaForSequenceClassification
+```
+
 For more configuration, please refer to `convert_fs_ckpt_to_hf_ckpt.py`.
 
 ## Model List
-...
+
+Here are the HuggingFace checkpoints of our models in the paper [Should You Mask 15% in Masked Language Modeling](https://arxiv.org/abs/2202.08005):
+|              Model              | MNLI |
+|:-------------------------------|:--------:|
+|  [princeton-nlp/efficient_mlm_m0.15](https://huggingface.co/princeton-nlp/efficient_mlm_m0.15) |   84.2 |
+| [princeton-nlp/efficient_mlm_m0.40](https://huggingface.co/princeton-nlp/efficient_mlm_m0.40) |   84.5  |
+|  [princeton-nlp/efficient_mlm_m0.15-801010](https://huggingface.co/princeton-nlp/efficient_mlm_m0.15-801010)    |   83.7  |
+|  [princeton-nlp/efficient_mlm_m0.40-801010](https://huggingface.co/princeton-nlp/efficient_mlm_m0.40-801010)   |   84.3  |
+
+We also offer the original (deepspeed) fairseq checkpoints [here](https://huggingface.co/princeton-nlp/efficient_mlm_fairseq_ckpt). 
 
 <!-- # Citation
 
