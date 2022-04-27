@@ -138,7 +138,7 @@ DATA_DIR=$(seq 0 15 | sed -e 's/^/wikibook_fairseq_format\/bin-shard/' | sed -e 
 
 Please refer to the script for more hyperparameter choices.
 
-## Fine-tuning on GLUE
+## Fine-tuning on GLUE and SQuAD
 
 All our checkpoints can be converted to HuggingFace [transformers](https://github.com/huggingface/transformers) models (see next nextion) and use the [transformers](https://github.com/huggingface/transformers) package for fine-tuning. Fairseq also supports fine-tuning on GLUE. 
 
