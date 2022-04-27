@@ -161,6 +161,8 @@ CKPT_NAME={checkpoint's name} \
 [DEEPSPEED=1] bash finetune_glue.sh
 ```
 
+For fine-tuning on SQuAD, please convernt the models to HuggingFace checkpoints following the next section and use HuggingFace's [examples](https://github.com/huggingface/transformers/tree/main/examples/pytorch/question-answering).
+
 ## Convert to HuggingFace
 
 We also provide conversion codes so that you can easily turn Fairseq checkpoints into HuggingFace checkpoints. Usage:
@@ -186,13 +188,13 @@ For more configuration, please refer to `convert_fs_ckpt_to_hf_ckpt.py`.
 
 ## Model List
 
-Here are the HuggingFace checkpoints of our models in the paper [Should You Mask 15% in Masked Language Modeling](https://arxiv.org/abs/2202.08005):
-|              Model              | MNLI |
-|:-------------------------------|:--------:|
-|  [princeton-nlp/efficient_mlm_m0.15](https://huggingface.co/princeton-nlp/efficient_mlm_m0.15) |   84.2 |
-| [princeton-nlp/efficient_mlm_m0.40](https://huggingface.co/princeton-nlp/efficient_mlm_m0.40) |   84.5  |
-|  [princeton-nlp/efficient_mlm_m0.15-801010](https://huggingface.co/princeton-nlp/efficient_mlm_m0.15-801010)    |   83.7  |
-|  [princeton-nlp/efficient_mlm_m0.40-801010](https://huggingface.co/princeton-nlp/efficient_mlm_m0.40-801010)   |   84.3  |
+Here are the HuggingFace checkpoints of our models in the paper [Should You Mask 15% in Masked Language Modeling](https://arxiv.org/abs/2202.08005). Results are development set performance.
+|              Model              | MNLI | QNLI | QQP |  SST-2 
+|:-------------------------------|:--------:|:---------:|:---------:|:---------:|
+|  [princeton-nlp/efficient_mlm_m0.15](https://huggingface.co/princeton-nlp/efficient_mlm_m0.15) |  84.2 |  90.9 |  87.8 |  93.3 | 
+| [princeton-nlp/efficient_mlm_m0.40](https://huggingface.co/princeton-nlp/efficient_mlm_m0.40) |  84.5  | 91.6 | 88.1 | 92.8 |
+|  [princeton-nlp/efficient_mlm_m0.15-801010](https://huggingface.co/princeton-nlp/efficient_mlm_m0.15-801010)    |   83.7  | 90.4 | 87.8 |  93.2 | 
+|  [princeton-nlp/efficient_mlm_m0.40-801010](https://huggingface.co/princeton-nlp/efficient_mlm_m0.40-801010)   |   84.3  | 91.2 | 87.9 |  93.0 |
 
 We also offer the original (deepspeed) fairseq checkpoints [here](https://huggingface.co/princeton-nlp/efficient_mlm_fairseq_ckpt). 
 
@@ -210,3 +212,13 @@ If you hav an questions, or encounter any problems when using the code, or want 
    year={2022}
 }
 ```
+
+## References
+
+* Our package is based on [fairseq](https://github.com/pytorch/fairseq):
+
+Myle Ott, Sergey Edunov, Alexei Baevski, Angela Fan, Sam Gross, Nathan Ng, David Grangier, and Michael Auli. 2019. fairseq: A fast, extensible toolkit for sequence modeling. In _Proceedings of the 2019 Conference of the North American Chapter of the Association for Computational Linguistics (Demonstrations)_, pages 48–53.
+
+* Our efficient training recipe is inspired by the following paper:
+
+Peter Izsak, Moshe Berchansky, and Omer Levy. 2021. How to train BERT with an academic budget. In _Empirical Methods in Natural Language Processing (EMNLP)_, pages 10644–10652.
