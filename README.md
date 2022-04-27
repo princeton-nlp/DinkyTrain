@@ -39,6 +39,7 @@ See the [fairseq repo](https://github.com/fairseq/fairseq) and its [documentatio
   - [Fine-tuning on GLUE](#fine-tuning-on-glue)
   - [Convert to HuggingFace](#convert-to-huggingface)
   - [Model List](#model-list)
+  - [Bugs or Questions?](#bugs-or-questions)
   - [Citation](#citation)
 
 ## Overview
@@ -196,7 +197,8 @@ Here are the HuggingFace checkpoints of our models in the paper [Should You Mask
 We also offer the original (deepspeed) fairseq checkpoints [here](https://huggingface.co/princeton-nlp/efficient_mlm_fairseq_ckpt). 
 
 
-
+## Bugs or Questions?
+If you hav an questions, or encounter any problems when using the code, or want to report a bug, you can open an issue. Please try to specify the problem with details so we can help you better and quicker!
 
 ## Citation
 
