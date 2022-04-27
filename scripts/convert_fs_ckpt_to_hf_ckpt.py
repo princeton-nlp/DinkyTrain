@@ -20,7 +20,9 @@ from transformers import RobertaConfig, AutoTokenizer
 import os
 if os.getenv("PRELAYERNORM") is not None and os.getenv("PRELAYERNORM") == "1":
     print("Use pre layer norm")
-    from pre_ln_roberta.modeling_roberta import RobertaForMaskedLM, RobertaForSequenceClassification
+    import sys
+    sys.path.append("..")
+    from huggingface.modeling_roberta_prelayernorm import RobertaForMaskedLM, RobertaForSequenceClassification
     pre_layer_norm = True
 else:
     from transformers import RobertaModel as TransformerRobertaModel

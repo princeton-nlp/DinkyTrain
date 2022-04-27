@@ -179,9 +179,9 @@ Flags explained:
 * `--to`: The path you want to save the HuggingFace checkpoint to.
 * `--hf_model_config`: `roberta-base` or `roberta-large`.
 
-**IMPORTANT**: all our models use pre layer norm, which is not supported by HuggingFace yet. To use it, import the model class from `scripts/pre_ln_roberta/modeling_roberta.py`. For example:
+**IMPORTANT**: all our models use pre layer norm, which is not supported by HuggingFace yet. To use it, import the model class from `huggingface/modeling_roberta_prelayernorm.py`. For example:
 ``` python
-from pre_ln_roberta.modeling_roberta import RobertaForSequenceClassification
+from huggingface.modeling_roberta_prelayernorm import RobertaForSequenceClassification
 ```
 
 For more configuration, please refer to `convert_fs_ckpt_to_hf_ckpt.py`.
