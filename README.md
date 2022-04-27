@@ -213,7 +213,7 @@ If you hav an questions, or encounter any problems when using the code, or want 
 }
 ```
 
-## References
+## Acknowledgment
 
 * Our package is based on [fairseq](https://github.com/pytorch/fairseq):
 
