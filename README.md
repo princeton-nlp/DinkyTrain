@@ -161,7 +161,7 @@ CKPT_NAME={checkpoint's name} \
 [DEEPSPEED=1] bash finetune_glue.sh
 ```
 
-For fine-tuning on SQuAD, please convernt the models to HuggingFace checkpoints following the next section and use HuggingFace's [examples](https://github.com/huggingface/transformers/tree/main/examples/pytorch/question-answering).
+For fine-tuning on SQuAD, please convert the models to HuggingFace checkpoints following the next section and use HuggingFace's [examples](https://github.com/huggingface/transformers/tree/main/examples/pytorch/question-answering).
 
 ## Convert to HuggingFace
 
