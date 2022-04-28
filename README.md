@@ -36,7 +36,7 @@ See the [fairseq repo](https://github.com/fairseq/fairseq) and its [documentatio
   - [Installation](#installation)
   - [Data Pre-processing](#data-pre-processing)
   - [Pre-training](#pre-training)
-  - [Fine-tuning on GLUE](#fine-tuning-on-glue)
+  - [Fine-tuning on GLUE and SQuAD](#fine-tuning-on-glue-and-squad)
   - [Convert to HuggingFace](#convert-to-huggingface)
   - [Model List](#model-list)
   - [Bugs or Questions?](#bugs-or-questions)
