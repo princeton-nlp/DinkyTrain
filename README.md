@@ -225,6 +225,6 @@ If you hav an questions, or encounter any problems when using the code, or want 
 
 Myle Ott, Sergey Edunov, Alexei Baevski, Angela Fan, Sam Gross, Nathan Ng, David Grangier, and Michael Auli. 2019. fairseq: A fast, extensible toolkit for sequence modeling. In _Proceedings of the 2019 Conference of the North American Chapter of the Association for Computational Linguistics (Demonstrations)_, pages 48–53.
 
-* Our efficient training recipe is inspired by the following paper:
+* Our efficient training recipe is based on the following paper:
 
 Peter Izsak, Moshe Berchansky, and Omer Levy. 2021. How to train BERT with an academic budget. In _Empirical Methods in Natural Language Processing (EMNLP)_, pages 10644–10652.
