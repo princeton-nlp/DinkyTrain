@@ -51,8 +51,8 @@ where we find that higher masking rates can lead to more efficient pre-training.
 * Python version >= 3.6
 * **To install fairseq** and develop locally:
 ``` bash
-git clone https://github.com/pytorch/fairseq
-cd fairseq
+git clone https://github.com/princeton-nlp/DinkyTrain.git
+cd DinkyTrain
 pip install --editable ./
 ```
 
