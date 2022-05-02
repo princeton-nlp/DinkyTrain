@@ -216,6 +216,12 @@ def main(cfg: FairseqConfig) -> None:
         PathManager.async_close()
         logger.info("ioPath PathManager finished waiting.")
 
+    try:
+        import wandb
+        wandb.finish()
+    except:
+        pass
+
     if torch.distributed.is_initialized():
         torch.distributed.barrier(distributed_utils.get_global_group())
     exit(return_code)

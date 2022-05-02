@@ -36,7 +36,7 @@ See the [fairseq repo](https://github.com/fairseq/fairseq) and its [documentatio
   - [Installation](#installation)
   - [Data Pre-processing](#data-pre-processing)
   - [Pre-training](#pre-training)
-  - [Fine-tuning on GLUE](#fine-tuning-on-glue)
+  - [Fine-tuning on GLUE and SQuAD](#fine-tuning-on-glue-and-squad)
   - [Convert to HuggingFace](#convert-to-huggingface)
   - [Model List](#model-list)
   - [Bugs or Questions?](#bugs-or-questions)
@@ -51,8 +51,8 @@ where we find that higher masking rates can lead to more efficient pre-training.
 * Python version >= 3.6
 * **To install fairseq** and develop locally:
 ``` bash
-git clone https://github.com/pytorch/fairseq
-cd fairseq
+git clone https://github.com/princeton-nlp/DinkyTrain.git
+cd DinkyTrain
 pip install --editable ./
 ```
 
@@ -192,7 +192,13 @@ Here are the HuggingFace checkpoints of our models in the paper [Should You Mask
 |              Model              | MNLI | QNLI | QQP |  SST-2 
 |:-------------------------------|:--------:|:---------:|:---------:|:---------:|
 |  [princeton-nlp/efficient_mlm_m0.15](https://huggingface.co/princeton-nlp/efficient_mlm_m0.15) |  84.2 |  90.9 |  87.8 |  93.3 | 
+|  [princeton-nlp/efficient_mlm_m0.20](https://huggingface.co/princeton-nlp/efficient_mlm_m0.20) |  84.1 |  91.3 |  87.9 | 92.7 | 
+|  [princeton-nlp/efficient_mlm_m0.30](https://huggingface.co/princeton-nlp/efficient_mlm_m0.30) |  84.2 | 91.6  | 88.0 | 93.0  | 
 | [princeton-nlp/efficient_mlm_m0.40](https://huggingface.co/princeton-nlp/efficient_mlm_m0.40) |  84.5  | 91.6 | 88.1 | 92.8 |
+|  [princeton-nlp/efficient_mlm_m0.50](https://huggingface.co/princeton-nlp/efficient_mlm_m0.50) | 84.1  |  91.1 | 88.1  | 92.7  | 
+|  [princeton-nlp/efficient_mlm_m0.60](https://huggingface.co/princeton-nlp/efficient_mlm_m0.60) | 83.2  | 90.7  | 87.8  | 92.6  | 
+|  [princeton-nlp/efficient_mlm_m0.70](https://huggingface.co/princeton-nlp/efficient_mlm_m0.70) | 82.3  | 89.4  | 87.5  | 91.9  | 
+|  [princeton-nlp/efficient_mlm_m0.80](https://huggingface.co/princeton-nlp/efficient_mlm_m0.80) | 80.8  | 87.9  | 87.1  | 90.5  | 
 |  [princeton-nlp/efficient_mlm_m0.15-801010](https://huggingface.co/princeton-nlp/efficient_mlm_m0.15-801010)    |   83.7  | 90.4 | 87.8 |  93.2 | 
 |  [princeton-nlp/efficient_mlm_m0.40-801010](https://huggingface.co/princeton-nlp/efficient_mlm_m0.40-801010)   |   84.3  | 91.2 | 87.9 |  93.0 |
 
@@ -219,6 +225,6 @@ If you hav an questions, or encounter any problems when using the code, or want 
 
 Myle Ott, Sergey Edunov, Alexei Baevski, Angela Fan, Sam Gross, Nathan Ng, David Grangier, and Michael Auli. 2019. fairseq: A fast, extensible toolkit for sequence modeling. In _Proceedings of the 2019 Conference of the North American Chapter of the Association for Computational Linguistics (Demonstrations)_, pages 48–53.
 
-* Our efficient training recipe is inspired by the following paper:
+* Our efficient training recipe is based on the following paper:
 
 Peter Izsak, Moshe Berchansky, and Omer Levy. 2021. How to train BERT with an academic budget. In _Empirical Methods in Natural Language Processing (EMNLP)_, pages 10644–10652.
