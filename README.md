@@ -140,7 +140,7 @@ Please refer to the script for more hyperparameter choices.
 
 ## Fine-tuning on GLUE and SQuAD
 
-All our checkpoints can be converted to HuggingFace [transformers](https://github.com/huggingface/transformers) models (see next nextion) and use the [transformers](https://github.com/huggingface/transformers) package for fine-tuning. Fairseq also supports fine-tuning on GLUE. 
+All our checkpoints can be converted to HuggingFace [transformers](https://github.com/huggingface/transformers) models (see next section) and use the [transformers](https://github.com/huggingface/transformers) package for fine-tuning. Fairseq also supports fine-tuning on GLUE. 
 
 First, download the preprocessed GLUE data (you can also process by yourself following the preprocess section above):
 ``` bash
@@ -206,7 +206,7 @@ We also offer the original (deepspeed) fairseq checkpoints [here](https://huggin
 
 
 ## Bugs or Questions?
-If you hav an questions, or encounter any problems when using the code, or want to report a bug, you can open an issue. Please try to specify the problem with details so we can help you better and quicker!
+If you have any questions, or encounter any problems when using the code, or want to report a bug, you can open an issue. Please try to specify the problem with details so we can help you better and quicker!
 
 ## Citation
 
