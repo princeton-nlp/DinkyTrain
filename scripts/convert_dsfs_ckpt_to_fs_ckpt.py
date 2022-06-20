@@ -22,6 +22,10 @@ def convert_dsfs_ckpt_to_fs_ckpt(fr, to):
     new_ckpt["cfg"]['common']['deepspeed_cuda_kernel'] = False
     new_ckpt["cfg"]['task'].deepspeed_cuda_kernel = False
 
+    if hasattr(old_ckpt["cfg"]['model'], 'arch'):
+        new_ckpt["cfg"]['model'].arch = old_ckpt["cfg"]['model'].arch.split('deepspeed_', 1)[-1]
+    if hasattr(old_ckpt["cfg"]['model'], '_name'):
+        new_ckpt["cfg"]['model']._name = old_ckpt["cfg"]['model']._name.split('deepspeed_', 1)[-1]
     new_ckpt["cfg"]['model'].deepspeed_stochastic_mode = False
     new_ckpt["cfg"]['common']['deepspeed_stochastic_mode'] = False
     new_ckpt["cfg"]['task'].deepspeed_stochastic_mode = False
