@@ -214,7 +214,7 @@ If you have any questions, or encounter any problems when using the code, or wan
 @article{wettig2022should,
    title={Should You Mask 15% in Masked Language Modeling?},
    author={Wettig, Alexander and Gao, Tianyu and Zhong, Zexuan and Chen, Danqi},
-   boo={arXiv preprint arXiv:2202.08005},
+   book={arXiv preprint arXiv:2202.08005},
    year={2022}
 }
 ```
